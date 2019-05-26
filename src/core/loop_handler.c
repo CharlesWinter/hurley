@@ -12,7 +12,7 @@ int start_loop_handler(SDL_Window *window, SDL_Surface *screenSurface) {
 
   Hero* sensei = init_hero("sensei.png");
 
-  Hero__blit(screenSurface, sensei);
+	Hero__blit(screenSurface, sensei);
 
 	SDL_UpdateWindowSurface(window);
 
@@ -28,8 +28,9 @@ int start_loop_handler(SDL_Window *window, SDL_Surface *screenSurface) {
       }
 
       if (e.type == SDL_KEYDOWN) {
-        move_hero(e.key.keysym.sym, sensei);
+        Hero__move(e.key.keysym.sym, sensei, screenSurface);
       }
+			SDL_UpdateWindowSurface(window);
     }
   }
 

@@ -1,6 +1,6 @@
 #ifndef HERO_MOVE
 #define HERO_MOVE
 
-int move_hero(int movementKey, Hero* hero);
+int Hero__move(int movementKey, Hero* hero, SDL_Surface *screenSurface);
 
 #endif
