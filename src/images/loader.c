@@ -19,16 +19,19 @@ int getSprite(SDL_Surface **sprite, char* imageName) {
 	return 1;
 }
 
+// GetSpritePNG returns an allocated SDL_Surface after loading the passed image
+// name
 SDL_Surface* GetSpritePNG(char* imageName) {
 
-	char* spritePath = "images/";
+  // need a long enough total path so as to allow large imageNames and avoid
+  // segfaults
+	char spritePath[100] = "images/";
   strcat(spritePath, imageName);
 
 	SDL_Surface* sprite = IMG_Load(spritePath);
 	if( sprite == NULL ) {
-		printf( "Unable to load image %s! SDL Error: %s\n",spritePath, SDL_GetError() );
+		printf( "Unable to load image %s! SDL Error: %s\n",spritePath, IMG_GetError() );
 		return NULL;
 	}
 	return sprite;
-
 }

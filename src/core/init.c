@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 #include "core/init.h"
 
@@ -19,7 +20,7 @@ int init_window(SDL_Window **window, SDL_Surface **screenSurface) {
   }
 
 	printf("Initialising Window...\n");
-  *window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+  *window = SDL_CreateWindow("Hurley", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
   if (window == NULL) {
 		return -1;
   }
@@ -30,6 +31,12 @@ int init_window(SDL_Window **window, SDL_Surface **screenSurface) {
     return -1;
   }
 	printf("Got Surface OK... \n");
+
+  // initialise the image loading lib for PNGs
+ int imgFlags = IMG_INIT_PNG;
+ if( !( IMG_Init( imgFlags ) & imgFlags ) ) {
+	 printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
+ }
 
 	return 0;
 }

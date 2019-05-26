@@ -4,6 +4,7 @@
 typedef struct
 {
   SDL_Surface* Sprite;
+  char Name[50];
 } Hero;
 
 #endif

@@ -10,12 +10,11 @@
 
 int start_loop_handler(SDL_Window *window, SDL_Surface *screenSurface) {
 
- int 4 = init_hero();
+  Hero* sensei = init_hero("sensei.png");
 
-  SDL_FillRect( screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0xFF, 0xFF, 0xFF ) );
-  SDL_BlitSurface(sensei.sprite, NULL, screenSurface, NULL);
+  Hero__blit(screenSurface, sensei);
 
-  SDL_UpdateWindowSurface(window);
+	SDL_UpdateWindowSurface(window);
 
   printf("starting main loop handler\n");
   SDL_Event e;
@@ -24,15 +23,17 @@ int start_loop_handler(SDL_Window *window, SDL_Surface *screenSurface) {
 
   while(quit == 0) {
     while (SDL_PollEvent(&e) != 0) {
-      printf("polling\n");
       if(e.type == SDL_QUIT) {
         quit = 1;
       }
 
       if (e.type == SDL_KEYDOWN) {
-        move_hero(e.key.keysym.sym);
+        move_hero(e.key.keysym.sym, sensei);
       }
     }
   }
+
+  Hero__destroy(sensei);
+
   return 0;
 }
