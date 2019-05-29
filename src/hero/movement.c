@@ -9,7 +9,7 @@
 
 // move_hero moves a hero to the new x and y coordinates specified,
 // updates the heros internal x and ys, and reblits the image
-int Hero__move(int movementKey, Hero* hero, SDL_Surface *screenSurface) {
+int Hero__move(int movementKey, Hero* hero, SDL_Renderer *renderer) {
 
   switch (movementKey) {
     case SDLK_UP:
@@ -25,19 +25,18 @@ int Hero__move(int movementKey, Hero* hero, SDL_Surface *screenSurface) {
 			hero->X += MOVE_DISTANCE;
       break;
   }
-	Hero__blit(screenSurface, hero);
   return 0;
 }
 
 // Hero__blit blits the heros sprite onto the main screenSurface
-void Hero__blit(SDL_Surface *screenSurface, Hero *hero) {
+void Hero__blit(SDL_Renderer *renderer, Hero *hero) {
 
   struct SDL_Rect new_hero_rect = {
   	.x = hero->X,
   	.y = hero->Y,
-  	.h = hero->Sprite->h,
-  	.w = hero->Sprite->w,
+  	.h = hero->Height,
+  	.w = hero->Width,
   };
 
-  SDL_BlitSurface(hero->Sprite, NULL, screenSurface, &new_hero_rect);
+  SDL_RenderCopy(renderer, hero->Sprite, NULL, &new_hero_rect);
 }

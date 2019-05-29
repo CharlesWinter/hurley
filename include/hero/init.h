@@ -1,8 +1,8 @@
 #ifndef HERO_INIT
 #define HERO_INIT
 
-Hero* init_hero(char* name);
+Hero* init_hero(char* name, SDL_Renderer *renderer);
 
-void Hero__blit(SDL_Surface *screenSurface, Hero *hero);
+void Hero__blit(SDL_Renderer *renderer, Hero *hero);
 void Hero__destroy(Hero* hero);
 #endif

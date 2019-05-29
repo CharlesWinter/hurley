@@ -8,7 +8,7 @@
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 
-int init_window(SDL_Window **window, SDL_Surface **screenSurface) {
+int init_window(SDL_Window **window, SDL_Renderer **screenRenderer) {
 
 	printf("Initalising SDL...\n");
   //Initialize SDL
@@ -26,11 +26,14 @@ int init_window(SDL_Window **window, SDL_Surface **screenSurface) {
   }
 	printf("Created Window OK... \n");
 
-  *screenSurface = SDL_GetWindowSurface(*window);
-  if (screenSurface == NULL) {
-    return -1;
+  *screenRenderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
+  if (*screenRenderer == NULL) {
+    printf("Couldn't create renderer %s\n", SDL_GetError());
   }
-	printf("Got Surface OK... \n");
+  int blank = 0xFF;
+  SDL_SetRenderDrawColor(*screenRenderer, blank, blank, blank, blank);
+  SDL_RenderClear(*screenRenderer);
+  SDL_RenderPresent(*screenRenderer);
 
   // initialise the image loading lib for PNGs
  int imgFlags = IMG_INIT_PNG;

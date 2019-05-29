@@ -35,3 +35,15 @@ SDL_Surface* GetSpritePNG(char* imageName) {
 	}
 	return sprite;
 }
+
+SDL_Texture* GetSpriteTexture(char* imageName, SDL_Renderer* renderer) {
+  SDL_Surface* spriteSurface = GetSpritePNG(imageName);
+
+  SDL_Texture *spriteTexture = SDL_CreateTextureFromSurface(renderer, spriteSurface);
+  if (spriteTexture == NULL) {
+    printf("couldn't load sprite texture %s\n",SDL_GetError());
+  }
+
+  SDL_FreeSurface(spriteSurface);
+  return spriteTexture;
+}

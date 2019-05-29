@@ -8,11 +8,11 @@
 #include "hero/init.h"
 #include "hero/movement.h"
 
-int start_loop_handler(SDL_Window *window, SDL_Surface *screenSurface) {
+int start_loop_handler(SDL_Window *window, SDL_Renderer *renderer) {
 
-  Hero* sensei = init_hero("sensei.png");
+  Hero* sensei = init_hero("sensei.png", renderer);
 
-	Hero__blit(screenSurface, sensei);
+	Hero__blit(renderer, sensei);
 
 	SDL_UpdateWindowSurface(window);
 
@@ -23,14 +23,17 @@ int start_loop_handler(SDL_Window *window, SDL_Surface *screenSurface) {
 
   while(quit == 0) {
     while (SDL_PollEvent(&e) != 0) {
+      SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );
+      SDL_RenderClear(renderer);
       if(e.type == SDL_QUIT) {
         quit = 1;
       }
 
       if (e.type == SDL_KEYDOWN) {
-        Hero__move(e.key.keysym.sym, sensei, screenSurface);
+        Hero__move(e.key.keysym.sym, sensei, renderer);
       }
-			SDL_UpdateWindowSurface(window);
+      Hero__blit(renderer, sensei);
+      SDL_RenderPresent(renderer);
     }
   }
 
