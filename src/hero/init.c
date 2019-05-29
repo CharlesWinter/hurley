@@ -5,14 +5,15 @@
 #include "hero/movement.h"
 #include "images/loader.h"
 
-Hero* init_hero(char* name) {
+Hero* init_hero(char* name, SDL_Renderer* renderer) {
   printf("Init New Hero %s\n", name);
   Hero* new_hero = (Hero*) malloc(sizeof(Hero));
 
 	new_hero->X = 0;
 	new_hero->Y = 0;
 
-  new_hero->Sprite = GetSpritePNG(name);
+  new_hero->Sprite = GetSpriteTexture(name, renderer);
+  SDL_QueryTexture(new_hero->Sprite, NULL, NULL, &new_hero->Width, &new_hero->Height);
 
   strcpy(new_hero->Name, name);
 
