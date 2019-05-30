@@ -1,5 +1,5 @@
-#ifndef CORE_LOOP
-#define CORE_LOOP
+#ifndef IMG_LOADER
+#define IMG_LOADER
 
 int getSprite(SDL_Surface **sprite, char* imageName);
 SDL_Surface* GetSpritePNG(char* imageName);

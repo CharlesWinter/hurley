@@ -4,6 +4,8 @@
 
 #include "core/loop_handler.h"
 
+#include "images/grid.h"
+
 #include "hero/definition.h"
 #include "hero/init.h"
 #include "hero/movement.h"
@@ -25,6 +27,7 @@ int start_loop_handler(SDL_Window *window, SDL_Renderer *renderer) {
     while (SDL_PollEvent(&e) != 0) {
       SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );
       SDL_RenderClear(renderer);
+      renderGrid(renderer, window);
       if(e.type == SDL_QUIT) {
         quit = 1;
       }
