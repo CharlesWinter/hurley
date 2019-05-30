@@ -4,7 +4,8 @@
 
 #include "core/loop_handler.h"
 
-#include "images/grid.h"
+#include "grid/definition.h"
+#include "grid/grid.h"
 
 #include "hero/definition.h"
 #include "hero/init.h"
@@ -13,28 +14,28 @@
 int start_loop_handler(SDL_Window *window, SDL_Renderer *renderer) {
 
   Hero* sensei = init_hero("sensei.png", renderer);
-
 	Hero__blit(renderer, sensei);
 
-	SDL_UpdateWindowSurface(window);
+  Grid* grid = Grid__init(renderer, window);
 
-  printf("starting main loop handler\n");
-  SDL_Event e;
-
+  //int mouseX, mouseY;
   int quit = 0;
-
+  SDL_Event e;
   while(quit == 0) {
     while (SDL_PollEvent(&e) != 0) {
       SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );
       SDL_RenderClear(renderer);
-      renderGrid(renderer, window);
+
+      grid->renderGrid(grid);
       if(e.type == SDL_QUIT) {
         quit = 1;
       }
 
+      // simple test code to get sensei to move around. to be removed
       if (e.type == SDL_KEYDOWN) {
         Hero__move(e.key.keysym.sym, sensei, renderer);
       }
+
       Hero__blit(renderer, sensei);
       SDL_RenderPresent(renderer);
     }
