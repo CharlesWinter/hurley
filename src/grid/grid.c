@@ -100,5 +100,6 @@ SDL_Point getTargetCoords(const void *self_obj, SDL_Point mousePos) {
 
   Grid *self = ((Grid *)self_obj);
   Cell *cell = getMouseCell(self, mousePos);
+  printf("cell centre is X %d, Y %d\n", cell->centre.x, cell->centre.y);
   return cell->centre;
 }
