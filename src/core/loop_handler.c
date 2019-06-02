@@ -18,7 +18,8 @@ int start_loop_handler(SDL_Window *window, SDL_Renderer *renderer) {
 
   Grid* grid = Grid__init(renderer, window);
 
-  //int mouseX, mouseY;
+  int mouseX, mouseY;
+
   int quit = 0;
   SDL_Event e;
   while(quit == 0) {
@@ -34,6 +35,25 @@ int start_loop_handler(SDL_Window *window, SDL_Renderer *renderer) {
       // simple test code to get sensei to move around. to be removed
       if (e.type == SDL_KEYDOWN) {
         Hero__move(e.key.keysym.sym, sensei, renderer);
+      }
+
+      if (e.type == SDL_MOUSEBUTTONUP) {
+        SDL_GetMouseState(&mouseX, &mouseY);
+        SDL_Point mousePos = {
+          .x = mouseX,
+          .y = mouseY,
+        };
+        SDL_Point targPos = grid->getTargetCoords(grid, mousePos);
+        printf("targX %d, targY %d\n", targPos.x, targPos.y);
+      }
+
+      if (e.type == SDL_MOUSEMOTION) {
+        SDL_GetMouseState(&mouseX, &mouseY);
+        SDL_Point mousePos = {
+          .x = mouseX,
+          .y = mouseY,
+        };
+        grid->highlightCell(grid, mousePos);
       }
 
       Hero__blit(renderer, sensei);
