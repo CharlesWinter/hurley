@@ -32,6 +32,9 @@ int start_loop_handler(SDL_Window *window, SDL_Renderer *renderer) {
   int allowInput = 1;
 
   SDL_Event e;
+
+  SDL_Point movePath[sensei->MoveDistance];
+
   while(quit == 0) {
 
     while (allowInput == 1 && quit == 0) {
@@ -48,7 +51,11 @@ int start_loop_handler(SDL_Window *window, SDL_Renderer *renderer) {
           SDL_GetMouseState(&mouseClickPos.x, &mouseClickPos.y);
           sensei->CurrentTarget = grid->getTargetCoords(grid, mouseClickPos);
 
-          // Oversimplified; just simple lock to move sensei once input is given
+          grid->getPotentialPath(grid, mouseClickPos, movePath);
+
+          // allowInput was a control flow concept to start differentiating between
+          // selecting and displaying a potential movement path, and actually locking
+          // in the movement path once the phase ends.
           allowInput = 0;
         }
 
@@ -81,7 +88,6 @@ int start_loop_handler(SDL_Window *window, SDL_Renderer *renderer) {
 }
 
 int executeMoves(Hero *hero, SDL_Renderer *renderer) {
-
-  int reached_dest = Hero__move(hero, renderer);
+  Hero__move(hero, renderer);
   return 0;
 }

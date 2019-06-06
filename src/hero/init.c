@@ -12,6 +12,8 @@ Hero* init_hero(char* name, SDL_Renderer* renderer) {
 	new_hero->X = 0;
 	new_hero->Y = 0;
 
+  new_hero->MoveDistance = 4;
+
   new_hero->Sprite = GetSpriteTexture(name, renderer);
   SDL_QueryTexture(new_hero->Sprite, NULL, NULL, &new_hero->Width, &new_hero->Height);
 

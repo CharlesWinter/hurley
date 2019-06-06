@@ -11,6 +11,8 @@ typedef struct
   int Height;
   int Width;
 
+  int MoveDistance;
+
   SDL_Point CurrentTarget;
 
 } Hero;

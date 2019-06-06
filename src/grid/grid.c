@@ -8,9 +8,8 @@
 #define NUM_ROWS 10
 
 void renderGrid(const void *self);
-
 void highlightCell(const void *self_obj, SDL_Point clickPos);
-
+void getPotentialPath(const void *self_obj, SDL_Point clickPos, SDL_Point *path);
 void fillCells(Cell* cells[NUM_ROWS][NUM_COLS], int rowHeight, int colWidth, SDL_Renderer *renderer);
 
 SDL_Point getTargetCoords(const void *self_obj, SDL_Point);
@@ -32,6 +31,7 @@ Grid* Grid__init(SDL_Renderer *renderer, SDL_Window *window) {
   new_grid->renderGrid = &renderGrid;
   new_grid->highlightCell = &highlightCell;
   new_grid->getTargetCoords = &getTargetCoords;
+  new_grid->getPotentialPath = &getPotentialPath;
 
   return new_grid;
 }
@@ -92,6 +92,15 @@ void highlightCell(const void *self_obj, SDL_Point clickPos) {
     printf("gone bad\n");
     return;
   }
+}
+
+// getPotentialPaths fills an array of the players potential paths
+void getPotentialPath(const void *self_obj, SDL_Point clickPos, SDL_Point *path) {
+
+  // TODO: don't hardcode this
+  // int pathLength = sizeof(path);
+  int pathLength = 4;
+  printf("path len is %d\n", pathLength);
 
 }
 
