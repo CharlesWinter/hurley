@@ -3,4 +3,12 @@
 
 int start_loop_handler();
 
+typedef struct {
+  char* err_msg;
+  int err;
+
+  int action;
+
+} sub_phase_return;
+
 #endif

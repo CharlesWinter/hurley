@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL2/SDL.h>
+#include <stdbool.h>
+#include <time.h>
 
 #include "core/loop_handler.h"
 
@@ -11,83 +13,59 @@
 #include "hero/init.h"
 #include "hero/movement.h"
 
+#include "client/http_client.h"
+
 #define TOTAL_HEROES 8
 
-int executeMoves(Hero *sensei, SDL_Renderer *renderer);
+int executeMoves(Hero *hero, SDL_Renderer *renderer, Grid* grid);
+sub_phase_return updateMovementInput(SDL_Event e, Hero *hero, SDL_Renderer *renderer, Grid* grid);
 
 int start_loop_handler(SDL_Window *window, SDL_Renderer *renderer) {
 
-  Hero* sensei = init_hero("sensei.png", renderer);
-	Hero__blit(renderer, sensei);
+  Hero* player_hero = init_hero("sensei.png", renderer);
 
   Grid* grid = Grid__init(renderer, window);
 
-  int mouseX, mouseY;
-  SDL_Point mouseClickPos;
+  SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );
+  SDL_RenderClear(renderer);
+  grid->renderGrid(grid);
+	Hero__blit(renderer, player_hero);
+  SDL_RenderPresent(renderer);
 
-  int quit = 0;
+  // wait until the round begins
+  // todo improve this madness
+  time_t start_time = getPhaseStartTime();
+  while (time(NULL) - start_time < 2) {
+    SDL_Delay(500);
+  }
 
-  // allowInput is locked out whenever a round expires, for example when moves
-  // are being executed
-  int allowInput = 1;
-
+  // wait over, unlock input
+  int allowInput, makeMovement;
+  bool quit = false;
   SDL_Event e;
-
-  SDL_Point movePath[sensei->MoveDistance];
-
-  while(quit == 0) {
-
-    while (allowInput == 1 && quit == 0) {
-      while (SDL_PollEvent(&e) != 0) {
-        SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );
-        SDL_RenderClear(renderer);
-
-        grid->renderGrid(grid);
-        if(e.type == SDL_QUIT) {
-          quit = 1;
-        }
-
-        if (e.type == SDL_MOUSEBUTTONUP) {
-          SDL_GetMouseState(&mouseClickPos.x, &mouseClickPos.y);
-          sensei->CurrentTarget = grid->getTargetCoords(grid, mouseClickPos);
-
-          grid->getPotentialPath(grid, mouseClickPos, movePath);
-
-          // allowInput was a control flow concept to start differentiating between
-          // selecting and displaying a potential movement path, and actually locking
-          // in the movement path once the phase ends.
-          allowInput = 0;
-        }
-
-        if (e.type == SDL_MOUSEMOTION) {
-          SDL_GetMouseState(&mouseX, &mouseY);
-          SDL_Point mousePos = {
-            .x = mouseX,
-            .y = mouseY,
-          };
-          grid->highlightCell(grid, mousePos);
-        }
-
-        Hero__blit(renderer, sensei);
-        SDL_RenderPresent(renderer);
-      }
+  printf("input unlocked\n");
+  while (!quit && SDL_WaitEvent(&e)) {
+    if (e.type == SDL_QUIT) {
+      quit = true;
     }
 
-    // Once the flag is set to block movement, move all heroes (for now just
-    // sensei)
-    SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );
-    SDL_RenderClear(renderer);
-    grid->renderGrid(grid);
-    executeMoves(sensei, renderer);
-    SDL_RenderPresent(renderer);
-    allowInput = 1;
+    if (e.type == SDL_MOUSEBUTTONUP) {
+      SDL_Point mouseClickPos;
+      SDL_GetMouseState(&mouseClickPos.x, &mouseClickPos.y);
+      player_hero->CurrentTarget = grid->getTargetCoords(grid, mouseClickPos);
+
+      // just exist the game loop here as a test.
+      quit = 1;
+    }
   }
-  Hero__destroy(sensei);
 
-  return 0;
-}
+  //move the hero.
+  SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );
+  SDL_RenderClear(renderer);
+  grid->renderGrid(grid);
+  Hero__move(player_hero, renderer);
+  SDL_RenderPresent(renderer);
 
-int executeMoves(Hero *hero, SDL_Renderer *renderer) {
-  Hero__move(hero, renderer);
-  return 0;
+  SDL_Delay(2000);
+
 }
