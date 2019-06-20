@@ -3,7 +3,7 @@
 #include <SDL2/SDL.h>
 
 #include "core/init.h"
-#include "core/loop_handler.h"
+#include "core/game_handler.h"
 
 #define VERSION "0.0.1"
 
@@ -18,7 +18,7 @@ int main() {
     exit(1);
   }
 
-  if (start_loop_handler(window, renderer) < 0) {
+  if (init_game(window, renderer) < 0) {
     printf( "loop exit, closing program %s\n", SDL_GetError() );
     exit(1);
   }
