@@ -13,13 +13,18 @@
 
 #include "client/http_client.h"
 
+#include "progress_bar/definition.h"
+
 #define TOTAL_HEROES 8
+// Length of a round in seconds
+#define ROUND_LENGTH 30
 
 int executeMoves(Hero *hero, SDL_Renderer *renderer, Grid* grid);
 
 int movement_phase(Heroes heroes, SDL_Window *window, SDL_Renderer *renderer) {
 
   Grid* grid = Grid__init(renderer, window);
+  ProgressBar* progBar = ProgressBar__init(renderer, 30);
 
   SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );
   SDL_RenderClear(renderer);

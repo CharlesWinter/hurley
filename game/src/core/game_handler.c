@@ -7,7 +7,6 @@
 #include "core/movement_phase.h"
 
 #define TOTAL_ROUNDS 8
-#define TOTAL_PLAYERS 1
 
 // init game starts a game, and handles all operations until the game finishes
 int init_game(SDL_Window *window, SDL_Renderer *renderer) {
@@ -27,5 +26,7 @@ int init_game(SDL_Window *window, SDL_Renderer *renderer) {
       return 0;
     }
   }
+
+  Hero__destroy(heroes.player_hero);
   return 0;
 }
