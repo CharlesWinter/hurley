@@ -17,4 +17,14 @@ typedef struct
 
 } Hero;
 
+// Heroes is a holder for all the heroes in the game
+// TODO: should heroes have "methods" for all initialization?
+// TODO: shold heroes have methods for destroying.
+typedef struct
+{
+  Hero* player_hero;
+  Hero* teammates[3];
+  Hero* enemies[4];
+} Heroes;
+
 #endif
