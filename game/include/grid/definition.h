@@ -27,7 +27,7 @@ typedef struct
 
   void (*renderGrid)(const void* self);
   void (*highlightCell)(const void* self, SDL_Point clickPos);
-  void (*getPotentialPath)(const void*, SDL_Point, SDL_Point*);
+  void (*renderPath)(const void*, SDL_Point, SDL_Point);
 
   SDL_Point (*getTargetCoords)(const void *self_obj, SDL_Point);
 

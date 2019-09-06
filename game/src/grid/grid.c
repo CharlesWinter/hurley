@@ -9,7 +9,7 @@
 
 void renderGrid(const void *self);
 void highlightCell(const void *self_obj, SDL_Point clickPos);
-void getPotentialPath(const void *self_obj, SDL_Point clickPos, SDL_Point *path);
+void renderPath(const void *self_obj, SDL_Point clickPos, SDL_Point path);
 void fillCells(Cell* cells[NUM_ROWS][NUM_COLS], int rowHeight, int colWidth, SDL_Renderer *renderer);
 
 SDL_Point getTargetCoords(const void *self_obj, SDL_Point);
@@ -31,7 +31,7 @@ Grid* Grid__init(SDL_Renderer *renderer, SDL_Window *window) {
   new_grid->renderGrid = &renderGrid;
   new_grid->highlightCell = &highlightCell;
   new_grid->getTargetCoords = &getTargetCoords;
-  new_grid->getPotentialPath = &getPotentialPath;
+  new_grid->renderPath = &renderPath;
 
   return new_grid;
 }
@@ -94,14 +94,25 @@ void highlightCell(const void *self_obj, SDL_Point clickPos) {
   }
 }
 
-// getPotentialPaths fills an array of the players potential paths
-void getPotentialPath(const void *self_obj, SDL_Point clickPos, SDL_Point *path) {
+void renderLine(SDL_Renderer *renderer, SDL_Point pt1, SDL_Point pt2) {
+  SDL_SetRenderDrawColor(renderer, 0,0,0,0);
+  if (SDL_RenderDrawLine(renderer, pt1.x, pt1.y, pt2.x, pt2.y) < 0) {
+    printf("had a nightmare with the drawline %s\n", SDL_GetError());
+  }
+}
 
-  // TODO: don't hardcode this
-  // int pathLength = sizeof(path);
-  int pathLength = 4;
-  printf("path len is %d\n", pathLength);
+// renderPath fills an array of the players potential paths
+void renderPath(const void *self_obj, SDL_Point startPt, SDL_Point targetPt) {
 
+  Grid *self = ((Grid *)self_obj);
+  //1. Get the centres of the start and end cells
+  Cell* startCell =  getMouseCell(self, startPt);
+  Cell* endCell =  getMouseCell(self, targetPt);
+
+  //2. To begin, just draw a straight line between these two points
+  renderLine(self->renderer, startCell->centre, endCell->centre);
+
+  printf("drawing line from %d,%d to %d,%d\n", startCell->centre.x, startCell->centre.y, endCell->centre.x, endCell->centre.y);
 }
 
 // returns the coordinates to move the target to on a mouse click
