@@ -5,7 +5,7 @@ CC=gcc
 CFLAGS= -g -Wall
 
 P=hurley
-LDFLAGS= -lSDL2 -lSDL2_image
+LDFLAGS= -lSDL2 -lSDL2_image -lpthread
 build:
 	$(CC) $(CFLAGS) -Iinclude $(src) -o $(P) $(LDFLAGS)
 

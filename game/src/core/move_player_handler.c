@@ -11,7 +11,5 @@ SDL_Point getMouseCoords() {
 int move_player(Core* core, SDL_Event* e) {
   SDL_Point mouseCoords = getMouseCoords();
 
-  printf("mouse coords X: %d, Y: %d\n", mouseCoords.x, mouseCoords.y);
   return 0;
-
 }
