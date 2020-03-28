@@ -1,10 +1,14 @@
 #include <SDL2/SDL.h>
 #include <pthread.h>
 
+#include "hero/init.h"
+#include "hero/definition.h"
+
 #include "core/core.h"
+#include "core/handlers.h"
+
 #include "grid/definition.h"
 #include "grid/grid.h"
-#include "core/handlers.h"
 #include <time.h>
 #include <unistd.h>
 
@@ -83,6 +87,7 @@ int processEvent(const void *self_obj, SDL_Event* e) {
 
 int core_init(Core* core) {
   core->RefreshGraphics(core);
+  Hero__blit(core->renderer, core->player);
   return 0;
 }
 
@@ -100,16 +105,16 @@ int refresh_graphics(const void *self_obj) {
 // init game starts a game, and handles all operations until the game finishes
 int init_game(SDL_Window *window, SDL_Renderer *renderer) {
   Grid* grid = Grid__init(renderer, window);
-
-  printf("%p is grid address", grid);
+  Hero* player = init_hero("sensei.png", renderer);
 
   Core* core = (Core*) malloc(sizeof(Core));
-  core->ProcessEvent = processEvent;
-  core->RefreshGraphics = refresh_graphics;
-
   core->grid = grid;
   core->window = window;
   core->renderer = renderer;
+  core->player=player;
+
+  core->ProcessEvent = processEvent;
+  core->RefreshGraphics = refresh_graphics;
 
   core_init(core);
 
