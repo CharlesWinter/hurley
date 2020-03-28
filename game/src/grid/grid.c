@@ -51,6 +51,7 @@ void fillCells(Cell* cells[NUM_ROWS][NUM_COLS], int rowHeight, int colWidth, SDL
 }
 
 void renderGrid(const void *self_obj) {
+  printf("calling renderer");
 
   // as the typedef for grid has no knowledge of its own type as its not created yet,
   // its "methods" can't be passed the type grid. Need to cast it  to a grid ptr to

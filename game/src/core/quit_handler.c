@@ -2,6 +2,6 @@
 #include "core/core.h"
 
 int quit_handler(Core* core, SDL_Event* e) {
-  printf("quitting!\n");
+  free(core);
   return 1;
 }

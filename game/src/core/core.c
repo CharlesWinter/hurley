@@ -2,7 +2,11 @@
 #include <pthread.h>
 
 #include "core/core.h"
+#include "grid/definition.h"
+#include "grid/grid.h"
+#include "core/handlers.h"
 #include <time.h>
+#include <unistd.h>
 
 #define TOTAL_ROUNDS 8
 
@@ -77,10 +81,37 @@ int processEvent(const void *self_obj, SDL_Event* e) {
   return 0;
 }
 
+int core_init(Core* core) {
+  core->RefreshGraphics(core);
+  return 0;
+}
+
+int refresh_graphics(const void *self_obj) {
+  Core *self = ((Core *)self_obj);
+
+  SDL_SetRenderDrawColor( self->renderer, 0xFF, 0xFF, 0xFF, 0xFF );
+  SDL_RenderClear(self->renderer);
+  self->grid->renderGrid(self->grid);
+  SDL_RenderPresent(self->renderer);
+
+  return 0;
+}
+
 // init game starts a game, and handles all operations until the game finishes
 int init_game(SDL_Window *window, SDL_Renderer *renderer) {
+  Grid* grid = Grid__init(renderer, window);
+
+  printf("%p is grid address", grid);
+
   Core* core = (Core*) malloc(sizeof(Core));
   core->ProcessEvent = processEvent;
+  core->RefreshGraphics = refresh_graphics;
+
+  core->grid = grid;
+  core->window = window;
+  core->renderer = renderer;
+
+  core_init(core);
 
   Run(core);
 
