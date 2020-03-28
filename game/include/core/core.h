@@ -2,8 +2,8 @@
 #include "grid/definition.h"
 #include "hero/definition.h"
 
-#ifndef GAME_HANDLER
-#define GAME_HANDLER
+#ifndef CORE_STRUCT
+#define CORE_STRUCT
 
 typedef struct
 {

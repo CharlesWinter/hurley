@@ -5,12 +5,12 @@
 #include "hero/definition.h"
 
 #include "core/core.h"
-#include "core/handlers.h"
 
 #include "grid/definition.h"
 #include "grid/grid.h"
 #include <time.h>
 #include <unistd.h>
+#include "core/handlers.h"
 
 #define TOTAL_ROUNDS 8
 

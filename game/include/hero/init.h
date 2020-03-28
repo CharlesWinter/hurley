@@ -1,7 +1,7 @@
+#include "hero/definition.h"
+
 #ifndef HERO_INIT
 #define HERO_INIT
-
-#include "hero/definition.h"
 
 Hero* init_hero(char* name, SDL_Renderer *renderer);
 

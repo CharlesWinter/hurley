@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 
 #include "core/core.h"
+#include "hero/movement.h"
 
 SDL_Point getMouseCoords() {
   SDL_Point mouseClickPos;
@@ -21,6 +22,9 @@ int move_player(Core* core, SDL_Event* e) {
   SDL_RenderPresent(core->renderer);
 
   SDL_Delay(2000);
+  core->RefreshGraphics(core);
+  Hero__move(core->player, core->renderer);
+  SDL_RenderPresent(core->renderer);
 
   return 0;
 }
