@@ -57,7 +57,6 @@ void Run(Core* core, TCP_Client* tcp_client) {
         if (exit_all_threads == 1) {
           return NULL;
         }
-
       }
       printf("returning from the mock tcp handler\n");
 
@@ -124,11 +123,19 @@ int refresh_graphics(const void *self_obj) {
 }
 
 int process_tcp(const void *self_obj, unsigned int code) {
-  Core *self = ((Core *)self_obj);
+  // Core *self = ((Core *)self_obj);
+  printf("received code: %d\n", code);
 
   switch (code) {
+    case 465:
+      printf("received event NEW_ROUND\n");
+      return 0;
     case 466:
-      self->current_phase=4;
+      printf("received event MOVE_PHASE_START\n");
+      return 0;
+    case 467:
+      printf("received event MOVE_PHASE_END\n");
+      return 0;
   }
 
   return 0;
