@@ -5,17 +5,17 @@
 
 #include "hero/definition.h"
 #include "grid/definition.h"
+#include "tcp/definition.h"
 #include "core/definition.h"
 #include "core/handlers.h"
 
 #define TOTAL_ROUNDS 8
 
-pthread_t tid[2];
 int counter;
 pthread_mutex_t lock;
 
-void Run(Core* core) {
-  pthread_t thread_1, thread_2;
+void Run(Core* core, TCP_Client* tcp_client) {
+  pthread_t thread_1, thread_2, thread_3;
 
   int exit_all_threads;
 
@@ -35,14 +35,27 @@ void Run(Core* core) {
   }
 
   void* timerThread(void *arg) {
-    time_t seconds;
     while (exit_all_threads != 1) {
-      seconds = time(NULL);
-      printf("Seconds since January 1, 1970 = %ld\n", seconds);
-      sleep(2);
+      sleep(1);
     }
 
     return NULL;
+  }
+
+  // in place of actually making a TCP connection, this thread will be used to
+  // simulate input from the server
+  void* mockTCPThread(void *arg) {
+      unsigned int event_code;
+
+      while (exit_all_threads != 1) {
+        pthread_mutex_lock(&lock);
+        tcp_client->Listen_Wait(tcp_client, &event_code);
+        printf("received a thing\n");
+        pthread_mutex_unlock(&lock);
+
+      }
+
+      return NULL;
   }
 
 	if (pthread_mutex_init(&lock, NULL) != 0)
@@ -60,8 +73,14 @@ void Run(Core* core) {
     return;
   }
 
+  err = pthread_create(&thread_3, NULL, &mockTCPThread, NULL);
+  if (err != 0) {
+    return;
+  }
+
   pthread_join(thread_1, NULL);
   pthread_join(thread_2, NULL);
+  pthread_join(thread_3, NULL);
 
 	pthread_mutex_destroy(&lock);
 

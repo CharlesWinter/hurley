@@ -2,9 +2,11 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 
+#include "tcp/definition.h"
+
 #define VERSION "0.0.1"
 
-int init_game(SDL_Window *window, SDL_Renderer *renderer);
+int init_game(SDL_Window *window, SDL_Renderer *renderer, TCP_Client* tcp_client);
 int init_window(SDL_Window **window, SDL_Renderer **screenRenderer);
 
 int main() {
@@ -18,7 +20,9 @@ int main() {
     exit(1);
   }
 
-  if (init_game(window, renderer) < 0) {
+  TCP_Client* tcp_client = New__TCP_Client();
+
+  if (init_game(window, renderer, tcp_client) < 0) {
     printf( "loop exit, closing program %s\n", SDL_GetError() );
     exit(1);
   }
