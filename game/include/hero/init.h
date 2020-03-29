@@ -1,3 +1,5 @@
+#include "hero/definition.h"
+
 #ifndef HERO_INIT
 #define HERO_INIT
 

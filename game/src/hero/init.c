@@ -30,3 +30,9 @@ void Hero__destroy(Hero* hero) {
     free(hero);
   }
 }
+
+// game(client) C <----> python <-----> game(client) C
+//
+// keyboard --> game --> python
+// TCP      `:w
+// --> game()
