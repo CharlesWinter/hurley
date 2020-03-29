@@ -47,13 +47,19 @@ void Run(Core* core, TCP_Client* tcp_client) {
   void* mockTCPThread(void *arg) {
       unsigned int event_code;
 
-      while (exit_all_threads != 1) {
+      while( tcp_client->Listen_Wait(tcp_client, &event_code)) {
         pthread_mutex_lock(&lock);
-        tcp_client->Listen_Wait(tcp_client, &event_code);
         printf("received a thing\n");
+
+        core->ProcessTCP(core, event_code);
         pthread_mutex_unlock(&lock);
 
+        if (exit_all_threads == 1) {
+          return NULL;
+        }
+
       }
+      printf("returning from the mock tcp handler\n");
 
       return NULL;
   }
@@ -113,6 +119,17 @@ int refresh_graphics(const void *self_obj) {
   SDL_RenderClear(self->renderer);
   self->grid->renderGrid(self->grid);
   SDL_RenderPresent(self->renderer);
+
+  return 0;
+}
+
+int process_tcp(const void *self_obj, unsigned int code) {
+  Core *self = ((Core *)self_obj);
+
+  switch (code) {
+    case 466:
+      self->current_phase=4;
+  }
 
   return 0;
 }

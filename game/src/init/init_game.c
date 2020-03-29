@@ -18,6 +18,7 @@ int init_game(SDL_Window *window, SDL_Renderer *renderer, TCP_Client* tcp_client
   // attach functions to the core
   core->ProcessEvent = processEvent;
   core->RefreshGraphics = refresh_graphics;
+  core->ProcessTCP = process_tcp;
 
   // core_init performs the initialization of the graphics, and blits the hero
   // to the screen

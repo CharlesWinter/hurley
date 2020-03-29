@@ -7,7 +7,7 @@
 #define MOVE_PHASE_START 466
 #define MOVE_PHASE_END 467
 
-void listen_and_wait(const void* self_obj, unsigned int* event_code) {
+unsigned int listen_and_wait(const void* self_obj, unsigned int* event_code) {
   //eventually this will listen for and respond with TCP events,
   //but for now will just fake some simple integers being returned
 
@@ -15,7 +15,7 @@ void listen_and_wait(const void* self_obj, unsigned int* event_code) {
 
   unsigned int code = MOVE_PHASE_START;
   *event_code = code;
-  return;
+  return 1;
 }
 
 TCP_Client* New__TCP_Client() {
