@@ -2,8 +2,6 @@
 #include <SDL2/SDL.h>
 
 #include "hero/definition.h"
-#include "hero/init.h"
-#include "hero/movement.h"
 
 #define MOVE_DISTANCE 2
 

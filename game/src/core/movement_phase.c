@@ -5,14 +5,7 @@
 #include <time.h>
 
 #include "grid/definition.h"
-#include "grid/grid.h"
-
 #include "hero/definition.h"
-#include "hero/init.h"
-#include "hero/movement.h"
-
-#include "client/http_client.h"
-
 #include "progress_bar/definition.h"
 
 #define TOTAL_HEROES 8
@@ -21,6 +14,7 @@
 
 int executeMoves(Hero *hero, SDL_Renderer *renderer, Grid* grid);
 
+/*
 int movement_phase(Heroes heroes, SDL_Window *window, SDL_Renderer *renderer) {
 
   Grid* grid = Grid__init(renderer, window);
@@ -87,3 +81,4 @@ int movement_phase(Heroes heroes, SDL_Window *window, SDL_Renderer *renderer) {
   printf("movement phase finished, quit is %d\n", quit);
   return quit;
 }
+*/

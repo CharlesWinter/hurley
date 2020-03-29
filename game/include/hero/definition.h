@@ -17,14 +17,10 @@ typedef struct
 
 } Hero;
 
-// Heroes is a holder for all the heroes in the game
-// TODO: should heroes have "methods" for all initialization?
-// TODO: shold heroes have methods for destroying.
-typedef struct
-{
-  Hero* player_hero;
-  Hero* teammates[3];
-  Hero* enemies[4];
-} Heroes;
+Hero* init_hero(char* name, SDL_Renderer *renderer);
+
+void Hero__blit(SDL_Renderer *renderer, Hero *hero);
+void Hero__destroy(Hero* hero);
+int Hero__move(Hero* hero, SDL_Renderer *renderer);
 
 #endif

@@ -21,4 +21,9 @@ typedef struct
 
 } Core;
 
+// process evebt is used to handle SDL events
+int processEvent(const void *self_obj, SDL_Event* e);
+int refresh_graphics(const void *self_obj);
+int core_init(Core* core);
+void Run(Core* core);
 #endif

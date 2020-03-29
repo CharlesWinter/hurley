@@ -1,45 +1,99 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include <pthread.h>
+#include <time.h>
+#include <unistd.h>
 
-#include "core/init.h"
+#include "hero/definition.h"
+#include "grid/definition.h"
+#include "core/definition.h"
+#include "core/handlers.h"
 
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+#define TOTAL_ROUNDS 8
 
-int init_window(SDL_Window **window, SDL_Renderer **screenRenderer) {
+pthread_t tid[2];
+int counter;
+pthread_mutex_t lock;
 
-	printf("Initalising SDL...\n");
-  //Initialize SDL
+void Run(Core* core) {
+  pthread_t thread_1, thread_2;
 
-  if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
-  {
-		printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
-		return -1;
+  int exit_all_threads;
+
+  void* eventThread(void *arg) {
+    SDL_Event e;
+    while (SDL_WaitEvent(&e)) {
+      pthread_mutex_lock(&lock);
+      exit_all_threads = core->ProcessEvent(core, &e);
+      pthread_mutex_unlock(&lock);
+      if (exit_all_threads == 1) {
+        printf("returning\n");
+        return NULL;
+      }
+    }
+
+    return NULL;
   }
 
-	printf("Initialising Window...\n");
-  *window = SDL_CreateWindow("Hurley", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-  if (window == NULL) {
-		return -1;
+  void* timerThread(void *arg) {
+    time_t seconds;
+    while (exit_all_threads != 1) {
+      seconds = time(NULL);
+      printf("Seconds since January 1, 1970 = %ld\n", seconds);
+      sleep(2);
+    }
+
+    return NULL;
   }
-	printf("Created Window OK... \n");
 
-  *screenRenderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
-  if (*screenRenderer == NULL) {
-    printf("Couldn't create renderer %s\n", SDL_GetError());
+	if (pthread_mutex_init(&lock, NULL) != 0)
+	{
+		printf("\n mutex init failed\n");
+		return;
+	}
+
+  int err = pthread_create(&thread_1, NULL, &eventThread, NULL);
+  if (err != 0) {
+    return;
   }
-  int blank = 0xFF;
-  SDL_SetRenderDrawColor(*screenRenderer, blank, blank, blank, blank);
-  SDL_RenderClear(*screenRenderer);
-  SDL_RenderPresent(*screenRenderer);
+  err = pthread_create(&thread_2, NULL, &timerThread, NULL);
+  if (err != 0) {
+    return;
+  }
 
-  // initialise the image loading lib for PNGs
- int imgFlags = IMG_INIT_PNG;
- if( !( IMG_Init( imgFlags ) & imgFlags ) ) {
-	 printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
- }
+  pthread_join(thread_1, NULL);
+  pthread_join(thread_2, NULL);
 
-	return 0;
+	pthread_mutex_destroy(&lock);
+
+  return;
+}
+
+int processEvent(const void *self_obj, SDL_Event* e) {
+  Core *self = ((Core *)self_obj);
+
+  switch (e->type) {
+    case SDL_QUIT:
+      return quit_handler(self, e);
+    case SDL_MOUSEBUTTONUP:
+      return move_player(self, e);
+  }
+
+  return 0;
+}
+
+int core_init(Core* core) {
+  core->RefreshGraphics(core);
+  Hero__blit(core->renderer, core->player);
+  return 0;
+}
+
+int refresh_graphics(const void *self_obj) {
+  Core *self = ((Core *)self_obj);
+
+  SDL_SetRenderDrawColor( self->renderer, 0xFF, 0xFF, 0xFF, 0xFF );
+  SDL_RenderClear(self->renderer);
+  self->grid->renderGrid(self->grid);
+  SDL_RenderPresent(self->renderer);
+
+  return 0;
 }

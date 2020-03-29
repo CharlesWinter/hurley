@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
 
-#include "core/core.h"
-#include "hero/movement.h"
+#include "core/definition.h"
+#include "hero/definition.h"
 
 SDL_Point getMouseCoords() {
   SDL_Point mouseClickPos;

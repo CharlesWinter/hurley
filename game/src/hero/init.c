@@ -2,7 +2,6 @@
 #include <SDL2/SDL.h>
 
 #include "hero/definition.h"
-#include "hero/movement.h"
 #include "images/loader.h"
 
 Hero* init_hero(char* name, SDL_Renderer* renderer) {

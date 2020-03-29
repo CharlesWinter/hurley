@@ -39,4 +39,6 @@ Cell* Cell__init(enum TerrainType type, SDL_Point position, int height, int widt
 
 void Cell__destroy(Cell* cell);
 
+Grid* Grid__init(SDL_Renderer *renderer, SDL_Window *window);
+
 #endif
