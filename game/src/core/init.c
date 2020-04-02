@@ -4,9 +4,9 @@
 #include <unistd.h>
 
 #include "hero/definition.h"
-#include "grid/definition.h"
 #include "tcp/definition.h"
 #include "core/definition.h"
+#include "view/definition.h"
 #include "core/handlers.h"
 
 #define TOTAL_ROUNDS 8
@@ -15,6 +15,7 @@ int counter;
 pthread_mutex_t lock;
 
 void Run(Core* core, TCP_Client* tcp_client) {
+  printf("running the game\n");
   pthread_t thread_1, thread_2, thread_3;
 
   int exit_all_threads;
@@ -106,24 +107,11 @@ int processEvent(const void *self_obj, SDL_Event* e) {
 }
 
 int core_init(Core* core) {
-  core->RefreshGraphics(core);
-  Hero__blit(core->renderer, core->player);
-  return 0;
-}
-
-int refresh_graphics(const void *self_obj) {
-  Core *self = ((Core *)self_obj);
-
-  SDL_SetRenderDrawColor( self->renderer, 0xFF, 0xFF, 0xFF, 0xFF );
-  SDL_RenderClear(self->renderer);
-  self->grid->renderGrid(self->grid);
-  SDL_RenderPresent(self->renderer);
-
+  refresh_graphics(core->viewport);
   return 0;
 }
 
 int process_tcp(const void *self_obj, unsigned int code) {
-  // Core *self = ((Core *)self_obj);
   printf("received code: %d\n", code);
 
   switch (code) {
