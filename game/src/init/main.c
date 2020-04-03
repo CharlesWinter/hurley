@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "tcp/definition.h"
 
@@ -8,6 +9,7 @@
 
 int init_game(SDL_Window *window, SDL_Renderer *renderer, TCP_Client* tcp_client);
 int init_window(SDL_Window **window, SDL_Renderer **screenRenderer);
+int init_fonts();
 
 int main() {
   printf("Starting Hurley, Version %s\n", VERSION);
@@ -21,6 +23,11 @@ int main() {
   }
 
   TCP_Client* tcp_client = New__TCP_Client();
+
+  if (init_fonts() < 0) {
+    printf("Couldn't initialise SDL_ttf: %s\n", TTF_GetError());
+    exit(1);
+  }
 
   if (init_game(window, renderer, tcp_client) < 0) {
     printf( "loop exit, closing program %s\n", SDL_GetError() );

@@ -113,18 +113,24 @@ int core_init(Core* core) {
 
 int process_tcp(const void *self_obj, unsigned int code) {
   printf("received code: %d\n", code);
+  Core *self = ((Core *)self_obj);
 
   switch (code) {
     case 465:
       printf("received event NEW_ROUND\n");
+      self->current_round++;
+      Viewport__display_banner(self->viewport, "new round");
       return 0;
     case 466:
       printf("received event MOVE_PHASE_START\n");
+      Viewport__display_banner(self->viewport, "move phase");
       return 0;
     case 467:
       printf("received event MOVE_PHASE_END\n");
+      Viewport__display_banner(self->viewport, "move phase has ended");
       return 0;
   }
+  self->current_phase = code;
 
   return 0;
 }
