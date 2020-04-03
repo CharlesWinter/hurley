@@ -9,7 +9,7 @@ int init_game(SDL_Window *window, SDL_Renderer *renderer, TCP_Client* tcp_client
 
   // attach properties to core
   Core* core = (Core*) malloc(sizeof(Core));
-  core->viewport = Init__Viewport(window, renderer);
+  core->viewport = Init__Viewport(window, renderer, player);
 
   core->player=player;
 

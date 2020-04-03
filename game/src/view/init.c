@@ -4,7 +4,7 @@
 #include "view/definition.h"
 #include "grid/definition.h"
 
-Viewport* Init__Viewport(SDL_Window *window, SDL_Renderer *renderer) {
+Viewport* Init__Viewport(SDL_Window *window, SDL_Renderer *renderer, Hero* player) {
   Viewport* vp = (Viewport*) malloc(sizeof(Viewport));
 
   TTF_Font* font =  TTF_OpenFont("text/fonts.ttf", 14);
@@ -18,6 +18,7 @@ Viewport* Init__Viewport(SDL_Window *window, SDL_Renderer *renderer) {
   vp->grid = grid;
   vp->renderer = renderer;
   vp -> window = window;
+  vp->player = player;
 
  return vp;
 }

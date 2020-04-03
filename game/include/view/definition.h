@@ -18,12 +18,19 @@ typedef struct
   Grid* grid;
   TTF_Font* font;
 
+  Hero* player;
+  Hero* allies[3];
+
+  Hero* enemies[4];
+
+  char* current_phase;
+
 } Viewport;
 
-int move_hero(Hero* hero, Viewport *viewport);
+int move_player_hero(Hero* hero, Viewport *viewport);
 int refresh_graphics(Viewport *viewport);
 
-Viewport* Init__Viewport(SDL_Window *window, SDL_Renderer *renderer);
+Viewport* Init__Viewport(SDL_Window *window, SDL_Renderer *renderer, Hero* player);
 
 int Viewport__display_banner(Viewport* vp, char* message);
 

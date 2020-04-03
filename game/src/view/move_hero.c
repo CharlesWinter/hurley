@@ -9,7 +9,7 @@ SDL_Point getMouseCoords() {
   return mouseClickPos;
 }
 
-int move_hero(Hero* hero, Viewport *viewport) {
+int move_player_hero(Hero* hero, Viewport *viewport) {
   SDL_Point mouseCoords = getMouseCoords();
   hero->CurrentTarget = viewport->grid->getTargetCoords(viewport->grid, mouseCoords);
 
@@ -17,15 +17,17 @@ int move_hero(Hero* hero, Viewport *viewport) {
     .x = hero->X,
     .y = hero->Y,
   };
+  viewport->player = hero;
+
+  Hero__move(hero, viewport->renderer);
 
   viewport->grid->renderPath(viewport->grid, heroCurrentPos, hero->CurrentTarget);
-
   SDL_RenderPresent(viewport->renderer);
 
   SDL_Delay(2000);
-  refresh_graphics(viewport);
-  Hero__move(hero, viewport->renderer);
-  SDL_RenderPresent(viewport->renderer);
 
+  refresh_graphics(viewport);
+
+  // for now just hardcode the viewport to only allow the player
   return 0;
 }
